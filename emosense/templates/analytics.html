@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Analytics - EmoSense{% endblock %}
+{% block content %}
+<h1>Analytics</h1>
+{% if total %}
+<div class="stats">
+  <div class="card"><span class="num">{{ total }}</span><span>total detections</span></div>
+  <div class="card"><span class="num">{{ '%.1f'|format(avg_conf) }}%</span><span>average confidence</span></div>
+</div>
+<section class="card">
+  <h2>Emotion breakdown</h2>
+  {% for r in rows %}
+  {% set pct = (r['c'] * 100 / total)|round(1) %}
+  <div class="bar-row">
+    <span class="bar-name">{{ EMOJI.get(r['emotion'], '') }} {{ r['emotion']|capitalize }}</span>
+    <div class="track"><div class="fill" style="width: {{ pct }}%; background: var(--{{ r['emotion'] }})"></div></div>
+    <span class="bar-pct">{{ pct }}% ({{ r['c'] }})</span>
+  </div>
+  {% endfor %}
+</section>
+{% else %}
+<p class="muted">Nothing to show yet. Run a few detections on <a href="{{ url_for('detect') }}">Detect emotion</a> and your breakdown will appear here.</p>
+{% endif %}
+{% endblock %}

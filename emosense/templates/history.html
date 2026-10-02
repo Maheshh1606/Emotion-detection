@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}History - EmoSense{% endblock %}
+{% block content %}
+<h1>History</h1>
+{% if rows %}
+<form method="post" action="{{ url_for('clear_history') }}" onsubmit="return confirm('Delete all saved detections?')">
+  <button class="btn danger" type="submit">Clear history</button>
+</form>
+<table>
+  <thead><tr><th>Time (UTC)</th><th>Emotion</th><th>Confidence</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td>{{ r['created_at'] }}</td>
+      <td><span class="dot" style="background: var(--{{ r['emotion'] }})"></span>{{ EMOJI.get(r['emotion'], '') }} {{ r['emotion']|capitalize }}</td>
+      <td>{{ r['confidence'] }}%</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No detections yet. Start the camera on <a href="{{ url_for('detect') }}">Detect emotion</a> to build your history.</p>
+{% endif %}
+{% endblock %}

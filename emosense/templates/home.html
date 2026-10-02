@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Home - EmoSense{% endblock %}
+{% block content %}
+<h1>Hi, {{ g.user['name'] }}</h1>
+{% if not model_ready %}
+<p class="notice">No trained model found. Run <code>python train.py</code> in the project folder, then restart the app.</p>
+{% endif %}
+<div class="stats">
+  <div class="card"><span class="num">{{ total }}</span><span>detections saved</span></div>
+  <div class="card">
+    {% if top %}<span class="num">{{ EMOJI.get(top['emotion'], '') }} {{ top['emotion']|capitalize }}</span><span>your most frequent emotion</span>
+    {% else %}<span class="num">-</span><span>no emotions detected yet</span>{% endif %}
+  </div>
+  <div class="card">
+    {% if last %}<span class="num">{{ last['confidence'] }}%</span><span>confidence on your last detection ({{ last['emotion'] }})</span>
+    {% else %}<span class="num">-</span><span>no recent detection</span>{% endif %}
+  </div>
+</div>
+<p><a class="btn" href="{{ url_for('detect') }}">Start detecting</a></p>
+{% endblock %}

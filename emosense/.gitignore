@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+fer2013/
+*.keras
+*.h5
+emosense.db
+labels.txt
+.env

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Detect emotion - EmoSense{% endblock %}
+{% block content %}
+<h1>Real-time emotion detection</h1>
+<p class="muted">Allow camera access, face the camera in good light, then select Start camera.</p>
+{% if not model_ready %}
+<p class="notice">No trained model found. Run <code>python train.py</code>, then restart the app.</p>
+{% endif %}
+<div class="detect">
+  <div>
+    <div class="stage">
+      <video id="video" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+    </div>
+    <button id="toggle" class="btn" type="button">Start camera</button>
+    <p id="status" class="muted" aria-live="polite"></p>
+  </div>
+  <section class="card result">
+    <h2>Detected emotion</h2>
+    <div id="icon" class="icon">🙂</div>
+    <div id="label" class="label">-</div>
+    <div id="bars"></div>
+  </section>
+</div>
+<script>
+  const LABELS = {{ labels|tojson }};
+  const EMOJI = {{ EMOJI|tojson }};
+</script>
+<script src="{{ url_for('static', filename='detect.js') }}"></script>
+{% endblock %}
